@@ -1,10 +1,10 @@
-name: 'Upload Tar Artifact'
-description: 'Compress files with tar prior to artifacting to keep file privileges.'
+name: "Upload Tar Artifact"
+description: "Compress files with tar prior to artifacting to keep file privileges."
 
 inputs:
   name:
-    description: 'Artifact name'
-    default: 'artifact'
+    description: "Artifact name"
+    default: "artifact"
     required: false
   path:
     description: >
@@ -18,7 +18,7 @@ inputs:
         warn: Output a warning but do not fail the action
         error: Fail the action with an error message
         ignore: Do not output any warnings or errors, the action does not fail
-    default: 'warn'
+    default: "warn"
     required: false
   retention-days:
     description: >
@@ -28,14 +28,14 @@ inputs:
     required: false
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - run: |
         shopt -s globstar
         tar -cvf artifact.tar ${{ inputs.path }}
       shell: bash
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.name }}
         path: artifact.tar
@@ -43,4 +43,4 @@ runs:
         retention-days: ${{ inputs.retention-days }}
 
     - run: rm artifact.tar
-      shell: 'bash'
+      shell: "bash"
